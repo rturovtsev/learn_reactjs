@@ -1,8 +1,34 @@
+var myNews = [
+    {
+        author: 'Саша',
+        text: 'Текст от саши'
+    },
+    {
+        author: 'Петя',
+        text: 'Текст от пети'
+    },
+    {
+        author: 'Вася',
+        text: 'Текст от васи'
+    }
+];
+
+
 var News = React.createClass({
     render: function() {
+        var data = this.props.data;
+        var newsTemplate = data.map(function(item, index) {
+            return (
+                <div key={index}>
+                    <p className="news__author">{item.author}</p>
+                    <p className="news__text">{item.text}</p>
+                </div>
+            );
+        });
+
         return (
             <div className="news">
-                Новостей нет.
+                {newsTemplate}
             </div>
         );
     }
@@ -25,7 +51,7 @@ var App = React.createClass({
         return (
             <div className="app">
                 Компонент App!
-                <News />
+                <News data={myNews} /> {/* свойство data */}
                 <Comments />
             </div>
         );
