@@ -1,0 +1,20 @@
+{
+  "name": "learn_reactjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sugrob69/learn_reactjs.git"
+  },
+  "author": "Sugrob69",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sugrob69/learn_reactjs/issues"
+  },
+  "homepage": "https://github.com/sugrob69/learn_reactjs#readme"
+}
