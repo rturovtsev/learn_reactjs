@@ -17,6 +17,9 @@ var myNews = [
 ];
 
 
+window.ee = new EventEmitter();
+
+
 var Article = React.createClass({
     propTypes: {
         data: React.PropTypes.shape({
@@ -111,17 +114,29 @@ var Add = React.createClass({
     },
     onBtnClickHandler: function(e) {
         e.preventDefault();
-        var inputTxt = ReactDOM.findDOMNode(this.refs.author).value;
-        var textareaTxt = ReactDOM.findDOMNode(this.refs.text).value;
+        var author = ReactDOM.findDOMNode(this.refs.author).value;
+        var textEl = ReactDOM.findDOMNode(this.refs.text);
+        var text = textEl.value;
 
-        alert(inputTxt + '\n' + textareaTxt);
+        var item = [{
+            author: author,
+            text: text,
+            bigText: '...'
+        }];
+
+        window.ee.emit('News.add', item);
+
+        textEl.value = '';
+        this.setState({
+            textIsEmpty: true
+        });
     },
     onCheckRuleClick: function() {
         this.setState({
             agreeNotChecked: !this.state.agreeNotChecked
         });
     },
-    onFieldChange: function(fieldName, e) {    
+    onFieldChange: function(fieldName, e) {
         var next = {};
         if (e.target.value.trim().length > 0) {
             next[fieldName] = false;
@@ -168,7 +183,7 @@ var Add = React.createClass({
                     ref="alert__button"
                     disabled={btnIsDisabled}
                 >
-                    Отправить
+                    Добавить новость
                 </button>
             </form>
         );
@@ -177,12 +192,31 @@ var Add = React.createClass({
 
 
 var App = React.createClass({
+    getInitialState: function() {
+        return {
+            news: myNews
+        };
+    },
+    componentDidMount: function() {
+        var self = this;
+
+        window.ee.addListener('News.add', function(item) {
+            var nextNews = item.concat(self.state.news);
+
+            self.setState({
+                news: nextNews
+            });
+        });
+    },
+    componentWillUnmount: function() {
+        window.ee.removeListener('News.add');
+    },
     render: function() {
         return (
             <div className="app">
                 <h3>Новости</h3>
                 <Add />
-                <News data={myNews} /> {/* */}
+                <News data={this.state.news} /> {/* */}
             </div>
         );
     }
