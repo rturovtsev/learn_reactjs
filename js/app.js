@@ -62,9 +62,14 @@ var News = React.createClass({
     propTypes: {
         data: React.PropTypes.array.isRequired
     },
+    getInitialState: function() {
+        return {
+            counter: 0
+        };
+    },
     render: function() {
-        var data = this.props.data;
-        var newsTemplate;
+        var data = this.props.data,
+            newsTemplate;
 
         if (data.length > 0) {
             newsTemplate = data.map(function(item, index) {
@@ -81,7 +86,51 @@ var News = React.createClass({
         return (
             <div className="news">
                 {newsTemplate}
-                <strong className={'news__count ' + (data.length > 0 ? '' : 'none')}>Всего новостей: {data.length}</strong>
+                <strong
+                    onClick={this.incrimentCount}
+                    className={'news__count ' + (data.length > 0 ? '' : 'none')}
+                >
+                    Всего новостей: {data.length}
+                </strong>
+            </div>
+        );
+    }
+});
+
+
+var TestInput = React.createClass({
+    getInitialState: function() {
+        return {
+            myValue: ''
+        };
+    },
+    onChangeHandler: function(e) {
+        this.setState({
+            myValue: e.target.value
+        });
+    },
+    onBtnClickHandler: function() {
+        alert(this.state.myValue);
+    },
+    render: function() {
+        var value = this.state.myValue;
+
+        return (
+            <div>
+                <input
+                    onChange={this.onChangeHandler}
+                    type="text"
+                    className="test-input"
+                    value={value}
+                    placeholder="Введите значение"
+                />
+
+                <button
+                    type="button"
+                    onClick={this.onBtnClickHandler}
+                >
+                    Отправить
+                </button>
             </div>
         );
     }
@@ -93,6 +142,7 @@ var App = React.createClass({
         return (
             <div className="app">
                 <h3>Новости</h3>
+                <TestInput />
                 <News data={myNews} /> {/* */}
             </div>
         );
